@@ -39,6 +39,12 @@ return { -- Fuzzy Finder (files, lsp, etc)
           i = {
             ["<C-j>"] = "move_selection_next",
             ["<C-k>"] = "move_selection_previous",
+            ["<C-b>"] = "preview_scrolling_down",
+            ["<C-f>"] = "preview_scrolling_up",
+          },
+          n = {
+            ["<C-b>"] = "preview_scrolling_down",
+            ["<C-f>"] = "preview_scrolling_up",
           },
         },
       },
