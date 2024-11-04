@@ -3,9 +3,6 @@ local with_opts = require("utils").with_opts
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
--- no hightling after search
-vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
-
 -- exit insert mode in terminal
 vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", with_opts "Exit terminal insert mode")
 
