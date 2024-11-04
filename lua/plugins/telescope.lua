@@ -26,8 +26,6 @@ return { -- Fuzzy Finder (files, lsp, etc)
     { 'nvim-tree/nvim-web-devicons',            enabled = vim.g.have_nerd_font },
   },
   config = function()
-    local actions = require('telescope.actions')
-    local with_opts = require('utils').with_opts
     require('telescope').setup {
       defaults = {
         sorting_strategy = "ascending",
@@ -41,14 +39,8 @@ return { -- Fuzzy Finder (files, lsp, etc)
         },
         mappings = {
           i = {
-            ['<C-j>'] = {
-              actions.move_selection_next, type = 'action',
-              opts = with_opts('Move selection next')
-            },
-            ['<C-k>'] = {
-              actions.move_selection_previous, type = 'action',
-              opts = with_opts('Move selection next')
-            }
+            ['<C-j>'] = 'move_selection_next',
+            ['<C-k>'] = 'move_selection_previous',
           }
         },
       },
