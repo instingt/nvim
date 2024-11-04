@@ -18,3 +18,5 @@ vim.keymap.set("n", "<leader>q", "<cmd>q<cr>", with_opts "Close file")
 vim.keymap.set("n", "<leader>Q", "<cmd>qa!<cr>", with_opts "Close file")
 vim.keymap.set("n", "<leader>w", "<cmd>w<cr>", with_opts "Save file")
 vim.keymap.set("n", "<leader>W", "<cmd>wa<cr><cmd>qa<cr>", with_opts "Save file")
+
+vim.keymap.set("i", "jj", "<Esc>", with_opts())
