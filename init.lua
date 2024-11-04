@@ -1,4 +1,4 @@
-require("keymap")
-require("opts")
-require("autocmd")
-require('lazy_init')
+require "keymap"
+require "opts"
+require "autocmd"
+require "lazy_init"
