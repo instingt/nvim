@@ -3,12 +3,9 @@ vim.g.have_nerd_font = true
 vim.opt.number = true
 vim.opt.relativenumber = true
 
-vim.opt.showmode = false
-
 vim.schedule(function() vim.opt.clipboard = "unnamedplus" end)
 
 vim.opt.breakindent = true
-vim.opt.undofile = true
 
 -- Searching
 vim.opt.incsearch = true -- search as characters are entered
@@ -20,15 +17,12 @@ vim.opt.updatetime = 250
 
 vim.opt.timeoutlen = 300
 
-vim.opt.splitright = true
-vim.opt.splitbelow = true
-
 -- Preview substitutions live, as you type!
 vim.opt.inccommand = "split"
 
--- Show which line your cursor is on
-vim.opt.cursorline = true
+vim.opt.cursorline = true -- Show which line your cursor is on
 vim.opt.scrolloff = 10
+vim.o.sidescrolloff = 10
 
 vim.opt.swapfile = false
 vim.opt.backup = false
@@ -51,3 +45,7 @@ vim.opt.confirm = true -- confirm write instead of error
 vim.opt.visualbell = false -- no visual bell
 vim.opt.errorbells = false
 vim.opt.synmaxcol = 300 -- Text after this column is not highlightedim.opt.showtabline = 0
+
+vim.o.autoindent = true -- Copy indent from current line when starting new one (default: true)
+vim.o.smartcase = true -- Smart case (default: false)
+vim.o.numberwidth = 2
