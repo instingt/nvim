@@ -62,7 +62,6 @@ return {
           lsp_status,
           diagnostics,
           diff,
-          { "encoding", cond = hide_in_width },
           { "filetype", cond = hide_in_width },
         },
         lualine_y = { "location" },
