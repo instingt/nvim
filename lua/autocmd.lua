@@ -29,12 +29,25 @@ autocmd("BufEnter", {
   end,
 })
 
-vim.api.nvim_create_autocmd("CursorMoved", {
-  group = vim.api.nvim_create_augroup("auto-hlsearch", { clear = true }),
+autocmd("CursorMoved", {
+  group = augroup("auto-hlsearch", { clear = true }),
   desc = "disable search hightling on cursor move",
   callback = function()
     if vim.v.hlsearch == 1 and vim.fn.searchcount().exact_match == 0 then
       vim.schedule(function() vim.cmd.nohlsearch() end)
+    end
+  end,
+})
+
+vim.api.nvim_create_autocmd("BufEnter", {
+  group = augroup("NeoTreeStatusline", { clear = true }),
+  desc = "Control statusline visibility",
+  pattern = "*",
+  callback = function()
+    if vim.bo.filetype == "neo-tree" then
+      vim.opt.laststatus = 0 -- Hide statusline
+    else
+      vim.opt.laststatus = 2 -- Return statusline visibility
     end
   end,
 })
