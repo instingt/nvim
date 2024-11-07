@@ -29,6 +29,7 @@ local function status_line()
   local readonlyFlag = " %r"
   local lineInfo = "%5l/%L%* %p%%"
   local cmdLine = "%S" -- show cmdline content in statusline
+  local filetype = "%y"
 
   local aligner = "%="
   local leftSeparator = " :: "
@@ -47,6 +48,7 @@ local function status_line()
     macro,
     " ",
     cmdLine,
+    colorize(filetype, 0),
     colorize(lineInfo, 0),
     " ",
   }, "")
