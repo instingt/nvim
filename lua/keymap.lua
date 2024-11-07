@@ -21,3 +21,10 @@ vim.keymap.set("i", "jj", "<Esc>", with_opts())
 vim.keymap.set("n", "[b", "<cmd>bprev<cr>", with_opts "Prev buffer")
 vim.keymap.set("n", "]b", "<cmd>bNext<cr>", with_opts "Next buffer")
 vim.keymap.set("n", "|", "<cmd>vsplit<cr>", with_opts "Vertical split")
+
+-- jump half-page up/down centers the cursor
+vim.keymap.set("n", "<C-d>", "<C-d>zz")
+vim.keymap.set("n", "<C-u>", "<C-u>zz")
+-- also center the search results
+vim.keymap.set("n", "n", "nzzzv")
+vim.keymap.set("n", "N", "Nzzzv")
