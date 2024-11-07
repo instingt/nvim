@@ -68,6 +68,7 @@ function M.setup()
   -- move status line from separate line to a statusline
   -- (%S in the status_line() function)
   vim.opt.cmdheight = 0
+  vim.opt.laststatus = 3
   vim.opt.showcmdloc = "statusline"
   vim.opt.statusline = status_line()
 end
