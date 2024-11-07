@@ -11,6 +11,9 @@ return {
         "bash",
       },
 
+      modules = {},
+      ignore_install = {},
+
       -- Install parsers synchronously (only applied to `ensure_installed`)
       sync_install = false,
 
