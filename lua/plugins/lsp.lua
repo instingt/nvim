@@ -83,6 +83,8 @@ return {
             },
           },
         },
+        ts_ls = {},
+        angularls = {},
       }
 
       require("mason").setup()
