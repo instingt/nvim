@@ -90,9 +90,18 @@ return {
       require("mason").setup()
 
       local ensure_installed = vim.tbl_keys(servers or {})
+      -- extend Mason audoinstall with formatters
       vim.list_extend(ensure_installed, {
         "stylua", -- Used to format Lua code
+        "prettierd",
       })
+
+      -- extend Masson  autoinstall with linters
+      vim.list_extend(ensure_installed, {
+        "eslint_d",
+      })
+
+      -- Masson install
       require("mason-tool-installer").setup { ensure_installed = ensure_installed }
 
       require("mason-lspconfig").setup {
@@ -106,7 +115,27 @@ return {
       }
     end,
   },
+  {
+    -- Linter
+    "mfussenegger/nvim-lint",
+    event = { "BufReadPre", "BufNewFile" },
+    config = function()
+      local lint = require "lint"
+      local with_opts = require("utils").with_opts
 
+      lint.linters_by_ft = {
+        javascript = { "eslint_d" },
+        typescript = { "eslint_d" },
+      }
+
+      vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
+        group = vim.api.nvim_create_augroup("lint", { clear = true }),
+        callback = function() lint.try_lint() end,
+      })
+
+      vim.keymap.set("n", "<leader>ll", function() lint.try_lint() end, with_opts "Lint file")
+    end,
+  },
   { -- Autoformat
     "stevearc/conform.nvim",
     event = { "BufWritePre" },
@@ -116,7 +145,7 @@ return {
         "<leader>lf",
         function() require("conform").format { async = true, lsp_format = "fallback" } end,
         mode = "",
-        desc = "[F]ormat buffer",
+        desc = "Format buffer",
       },
     },
     opts = {
@@ -125,7 +154,8 @@ return {
         -- Disable "format_on_save lsp_fallback" for languages that don't
         -- have a well standardized coding style. You can add additional
         -- languages here or re-enable it for the disabled ones.
-        local disable_filetypes = { c = true, cpp = true }
+        -- local disable_filetypes = { c = true, cpp = true }
+        local disable_filetypes = {}
         local lsp_format_opt
         if disable_filetypes[vim.bo[bufnr].filetype] then
           lsp_format_opt = "never"
@@ -143,7 +173,12 @@ return {
         -- python = { "isort", "black" },
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
-        -- javascript = { "prettierd", "prettier", stop_after_first = true },
+        javascript = { "prettierd", "eslint_d" },
+        typescript = { "prettierd", "eslint_d" },
+        html = { "prettierd", "eslint_d" },
+        css = { "prettierd" },
+        json = { "prettierd" },
+        yaml = { "prettierd" },
       },
     },
   },
