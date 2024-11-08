@@ -1,8 +1,5 @@
 return {
   "nvim-lualine/lualine.nvim",
-  dependencies = {
-    { "yavorski/lualine-lsp-client-name.nvim" },
-  },
   config = function()
     local filename = {
       "filename",
@@ -30,9 +27,16 @@ return {
       cond = hide_in_width,
     }
 
-    local lsp_status = {
-      "lsp_client_name",
-      cond = hide_in_width,
+    local trouble = require "trouble"
+    local symbols = trouble.statusline {
+      mode = "lsp_document_symbols",
+      groups = {},
+      title = false,
+      filter = { range = true },
+      format = "{kind_icon}{symbol.name:Normal}",
+      -- The following line is needed to fix the background color
+      -- Set it to the lualine section you want to use
+      hl_group = "lualine_c_normal",
     }
 
     local function project() return vim.fn.fnamemodify(vim.fn.getcwd(), ":t") end
@@ -59,7 +63,7 @@ return {
         lualine_b = { project, filename },
         lualine_c = { isRecording },
         lualine_x = {
-          lsp_status,
+          { symbols.get, cond = symbols.has },
           diagnostics,
           diff,
           { "filetype", cond = hide_in_width },
@@ -76,7 +80,7 @@ return {
         lualine_z = {},
       },
       tabline = {},
-      extensions = {},
+      extensions = { "trouble" },
     }
     -- set opts to imrove look and feel
     vim.opt.cmdheight = 0 -- set cmd line height to 0; cmd line will be replaced lualine while command being writing
