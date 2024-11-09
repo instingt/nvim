@@ -38,3 +38,11 @@ autocmd("CursorMoved", {
     end
   end,
 })
+
+vim.api.nvim_create_autocmd("BufDelete", {
+  pattern = "*",
+  desc = "don't close nvim on last buffer delete",
+  callback = function()
+    if #vim.fn.getbufinfo { buflisted = 1 } == 1 and not package.loaded["neo-tree"] then vim.cmd "enew" end
+  end,
+})
