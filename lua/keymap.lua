@@ -19,6 +19,7 @@ vim.keymap.set("n", "<leader>W", "<cmd>wa<cr><cmd>qa<cr>", with_opts "Save file"
 vim.keymap.set("i", "jj", "<Esc>", with_opts())
 
 vim.keymap.set("n", "[b", "<cmd>bprev<cr>", with_opts "Prev buffer")
+vim.keymap.set("n", "<leader>c", "<cmd>bdel<cr>", with_opts "Prev buffer")
 vim.keymap.set("n", "]b", "<cmd>bNext<cr>", with_opts "Next buffer")
 vim.keymap.set("n", "|", "<cmd>vsplit<cr>", with_opts "Vertical split")
 
