@@ -18,6 +18,7 @@ return {
         },
         harpoon = true,
         which_key = true,
+        ufo = true,
       },
     }
 
