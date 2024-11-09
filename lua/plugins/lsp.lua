@@ -104,11 +104,19 @@ return {
       -- Masson install
       require("mason-tool-installer").setup { ensure_installed = ensure_installed }
 
+      local function on_attach(client, bufrn)
+        -- Enable navic if the server supports document symbols
+        if client.server_capabilities.documentSymbolProvider then require("nvim-navic").attach(client, bufrn) end
+      end
+
       require("mason-lspconfig").setup {
         handlers = {
           function(server_name)
             local server = servers[server_name] or {}
+
             server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
+            server.on_attach = on_attach
+
             require("lspconfig")[server_name].setup(server)
           end,
         },
