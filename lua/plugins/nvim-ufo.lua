@@ -21,6 +21,7 @@ return {
   event = "BufReadPost",
   config = function()
     local ufo = require "ufo"
+
     local handler = function(virtText, lnum, endLnum, width, truncate)
       local newVirtText = {}
       local suffix = (" 󰁂 %d "):format(endLnum - lnum)
@@ -60,8 +61,5 @@ return {
       provider_selector = function(_, _, _) return { "treesitter", "indent" } end,
       fold_virt_text_handler = handler,
     }
-
-    vim.keymap.set("n", "zR", ufo.openAllFolds)
-    vim.keymap.set("n", "zM", ufo.closeAllFolds)
   end,
 }

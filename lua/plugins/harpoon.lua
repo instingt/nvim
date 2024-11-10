@@ -42,7 +42,7 @@ return {
     vim.keymap.set("n", "<Leader>7", function() harpoon:list():select(7) end, with_opts "Open Harpoon 7")
 
     -- Toggle previous & next buffers stored within Harpoon list
-    vim.keymap.set("n", "H", function() harpoon:list():prev() end)
-    vim.keymap.set("n", "L", function() harpoon:list():next() end)
+    vim.keymap.set("n", "H", function() harpoon:list():prev() end, with_opts "Prev Harpoon")
+    vim.keymap.set("n", "L", function() harpoon:list():next() end, with_opts "Next Harpoon")
   end,
 }

@@ -2,8 +2,10 @@ return {
   "RRethy/vim-illuminate",
   config = function()
     local ill = require "illuminate"
-    vim.keymap.set("n", "]r", function() ill["goto_next_reference"](false) end, { desc = "Next reference" })
-    vim.keymap.set("n", "[r", function() ill["goto_prev_reference"](false) end, { desc = "Prev reference" })
+    local with_opts = require("utils").with_opts
+
+    vim.keymap.set("n", "]r", function() ill["goto_next_reference"](false) end, with_opts "Next reference")
+    vim.keymap.set("n", "[r", function() ill["goto_prev_reference"](false) end, with_opts "Prev reference")
     -- default configuration
     ill.configure {
       -- providers: provider used to get references in the buffer, ordered by priority
