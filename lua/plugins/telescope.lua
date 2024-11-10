@@ -31,6 +31,10 @@ return { -- Fuzzy Finder (files, lsp, etc)
         layout_strategy = "horizontal",
         anchor = "CENTER",
         layout_config = {
+          horizontal = {
+            preview_cutoff = 0,
+            preview_width = 0.6,
+          },
           prompt_position = "top",
           width = 0.94,
           height = 0.94,
