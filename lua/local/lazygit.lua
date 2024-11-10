@@ -1,4 +1,5 @@
 local Terminal = require("toggleterm.terminal").Terminal
+local with_opts = require("utils").with_opts
 
 local function is_lazygit_installed() return vim.fn.executable "lazygit" == 1 end
 
@@ -15,10 +16,10 @@ if is_lazygit_installed() then
   ---@diagnostic disable-next-line: lowercase-global
   function _lazygit_toggle() lazygit:toggle() end
 
-  vim.api.nvim_set_keymap("n", "<leader>gg", "<cmd>lua _lazygit_toggle()<CR>", { noremap = true, silent = true })
+  vim.keymap.set("n", "<leader>gg", "<cmd>lua _lazygit_toggle()<CR>", with_opts "Toggle Lazygit")
 else
   ---@diagnostic disable-next-line: lowercase-global
   function _notify() vim.notify("Lazygit should be install. Plase install it to use lazygit integration", vim.log.ERROR) end
 
-  vim.api.nvim_set_keymap("n", "<leader>gg", "<cmd>lua _notify()<CR>", { noremap = true, silent = true })
+  vim.keymap.set("n", "<leader>gg", "<cmd>lua _notify()<CR>", with_opts "Toggle Lazygit")
 end
