@@ -22,7 +22,7 @@ return {
       enabled = false,
     },
     modes = {
-      search = { enabled = true },
+      search = { enabled = false },
     },
   },
   keys = {
