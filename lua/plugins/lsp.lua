@@ -141,6 +141,18 @@ return {
         typescript = { "eslint_d" },
       }
 
+      -- fuck unpredictable plugins!!!!! (╯°□°)╯︵ ┻━┻
+      local disable_plubin_args = {
+        "--rule",
+        "file-progress/activate: 0",
+      }
+
+      for _, v in pairs(lint.linters.eslint_d.args) do
+        table.insert(disable_plubin_args, v)
+      end
+
+      lint.linters.eslint_d.args = disable_plubin_args
+
       vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
         group = vim.api.nvim_create_augroup("lint", { clear = true }),
         callback = function() lint.try_lint() end,
