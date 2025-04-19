@@ -90,6 +90,87 @@ return {
         },
         ts_ls = {},
         angularls = {},
+        gopls = {
+          capabilities = capabilities,
+          single_file_support = true,
+          settings = {
+            gopls = {
+              usePlaceholders = false,
+              completeFunctionCalls = false,
+              symbolScope = "all",
+              symbolStyle = "dynamic",
+              symbolMatcher = "fastfuzzy",
+              importShortcut = "both",
+              hoverKind = "FullDocumentation", -- or "SynopsisDocumentation", "SingleLine"
+              completeUnimported = true,
+              experimentalPostfixCompletions = true,
+              staticcheck = true,
+              gofumpt = true,
+              diagnosticsDelay = "1s",
+              diagnosticsTrigger = "Edit",
+              analysisProgressReporting = true,
+              codelenses = {
+                tidy = true,
+                generate = true,
+                upgrade_dependency = true,
+              },
+              semanticTokens = true,
+              hints = {
+                assignVariableTypes = true,
+                compositeLiteralFields = true,
+                compositeLiteralTypes = true,
+                constantValues = true,
+                functionTypeParameters = true,
+                parameterNames = true,
+                rangeVariableTypes = true,
+              },
+              analyses = {
+                unusedparams = true,
+                unusedvariable = true,
+                assign = true,
+                atomic = true,
+                bools = true,
+                composites = true,
+                copylocks = true,
+                defers = true,
+                deprecated = true,
+                directive = true,
+                embed = true,
+                errorsas = true,
+                fillreturns = true,
+                httpresponse = true,
+                ifaceassert = true,
+                infertypeargs = true,
+                loopclosure = true,
+                lostcancel = true,
+                nilfunc = true,
+                nilness = true,
+                nonewvars = true,
+                noresultvalues = true,
+                printf = true,
+                shadow = false, -- MAYBE NOT
+                shift = true,
+                sigchanyzer = true,
+                simplifycompositelit = true,
+                simplifyrange = true,
+                simplifyslice = true,
+                sortslice = true,
+                stdmethods = true,
+                stringintconv = true,
+                structtag = true,
+                testinggoroutine = true,
+                tests = true,
+                timeformat = true,
+                unmarshal = true,
+                unreachable = true,
+                unsafeptr = true,
+                unusedresult = true,
+                unusedwrite = true,
+                useany = true,
+              },
+            },
+          },
+        },
       }
 
       require("mason").setup()
@@ -115,6 +196,8 @@ return {
       end
 
       require("mason-lspconfig").setup {
+        ensure_installed = {},
+        automatic_installation = {},
         handlers = {
           function(server_name)
             local server = servers[server_name] or {}
@@ -241,6 +324,7 @@ return {
       --  into multiple repos for maintenance purposes.
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-path",
+      "hrsh7th/cmp-nvim-lsp-signature-help",
     },
     config = function()
       -- See `:help cmp`
@@ -312,6 +396,7 @@ return {
           { name = "nvim_lsp", priority = 300 },
           { name = "buffer", priority = 200 },
           { name = "path", priority = 100 },
+          { name = "nvim_lsp_signature_help" },
         },
       }
     end,

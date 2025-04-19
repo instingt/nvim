@@ -46,3 +46,8 @@ vim.api.nvim_create_autocmd("BufDelete", {
     if #vim.fn.getbufinfo { buflisted = 1 } == 1 and not package.loaded["neo-tree"] then vim.cmd "enew" end
   end,
 })
+
+vim.api.nvim_create_autocmd("BufEnter", {
+  pattern = "*.go",
+  callback = function() vim.lsp.codelens.refresh() end,
+})

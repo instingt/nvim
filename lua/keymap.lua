@@ -27,3 +27,8 @@ vim.keymap.set("n", "<C-u>", "<C-u>zz")
 -- also center the search results
 vim.keymap.set("n", "n", "nzzzv")
 vim.keymap.set("n", "N", "Nzzzv")
+
+-- GO mappings
+vim.keymap.set("n", "<leader>rr", ":!go run %<cr>", with_opts "go run this file")
+vim.keymap.set("n", "<leader>rt", ":Neotest run file<cr>", with_opts "run tests (file)")
+vim.keymap.set("n", "<leader>rT", ":Neotest summary toggle<cr>", with_opts "neotest toggle")
