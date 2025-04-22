@@ -26,7 +26,7 @@ return {
       vim.api.nvim_create_autocmd("LspAttach", {
         group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
         callback = function(e)
-          local tele = require "telescope.builtin"
+          local builtin = require "telescope.builtin"
           local with_opts = require("utils").with_opts
           local function opts(desc) return vim.tbl_extend("force", { buffer = e.buf }, with_opts(desc)) end
 
@@ -35,16 +35,16 @@ return {
           vim.keymap.set("n", "grr", function() vim.lsp.buf.references() end, opts "Find references")
           vim.keymap.set("n", "grn", function() vim.lsp.buf.rename() end, opts "Rename")
           vim.keymap.set("n", "gl", function() vim.diagnostic.open_float() end, opts "Diagnostic float")
-          vim.keymap.set("n", "<leader>ls", function() tele.lsp_document_symbols() end, opts "Show document symbols")
-          vim.keymap.set("n", "<leader>ld", function() tele.diagnostics() end, opts "Diagnostic")
+          vim.keymap.set("n", "<leader>ls", function() builtin.lsp_document_symbols() end, opts "Show document symbols")
+          vim.keymap.set("n", "<leader>ld", function() builtin.diagnostics() end, opts "Diagnostic")
           vim.keymap.set("n", "<leader>la", function() vim.lsp.buf.code_action() end, opts "Code action")
           vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts "LSP Hover")
-          vim.keymap.set("n", "<SC-K>", function() vim.lsp.buf.signature_help() end, opts "Signature help")
+          vim.keymap.set({ "n", "i" }, "<SC-K>", function() vim.lsp.buf.signature_help() end, opts "Signature help")
           vim.keymap.set("n", "[e", function() vim.diagnostic.goto_next() end, opts "Next error")
           vim.keymap.set("n", "]e", function() vim.diagnostic.goto_prev() end, opts "Prev error")
 
-          vim.lsp.handlers["textDocument/references"] = function(_, _, _) tele.lsp_references() end
-          vim.lsp.handlers["textDocument/implementation"] = function(_, _, _) tele.lsp_implementations() end
+          vim.lsp.handlers["textDocument/references"] = function(_, _, _) builtin.lsp_references() end
+          vim.lsp.handlers["textDocument/implementation"] = function(_, _, _) builtin.lsp_implementations() end
           vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
             border = "single",
             focus = true,
@@ -88,8 +88,6 @@ return {
             },
           },
         },
-        ts_ls = {},
-        angularls = {},
         gopls = {
           capabilities = capabilities,
           single_file_support = true,
@@ -171,6 +169,26 @@ return {
             },
           },
         },
+        ts_ls = {
+          root_dir = function(fname)
+            local lspconfig = require "lspconfig"
+
+            return lspconfig.util.root_pattern("angular.json", "nx.json", ".git")(fname)
+          end,
+        },
+        angularls = {
+          root_dir = function(fname)
+            local lspconfig = require "lspconfig"
+
+            return lspconfig.util.root_pattern("angular.json", "nx.json", ".git")(fname)
+          end,
+        },
+        clangd = {},
+        nil_ls = {
+          formatting = {
+            command = { "nixfmt" },
+          },
+        },
       }
 
       require("mason").setup()
@@ -229,16 +247,24 @@ return {
         "--rule",
         "file-progress/activate: 0",
       }
-
-      for _, v in pairs(lint.linters.eslint_d.args) do
-        table.insert(disable_plubin_args, v)
-      end
-
       lint.linters.eslint_d.args = disable_plubin_args
+
+      -- disbale eslint when config not found
+      -- lint.linters.eslint_d.cmd = function()
+      local function has_eslint_config()
+        local config_files =
+          { ".eslintrc.js", ".eslintrc.cjs", ".eslintrc.yaml", ".eslintrc.yml", ".eslintrc.json", "package.json" }
+        for _, config_file in ipairs(config_files) do
+          if vim.fn.filereadable(vim.fn.getcwd() .. "/" .. config_file) == 1 then return true end
+        end
+        return false
+      end
 
       vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
         group = vim.api.nvim_create_augroup("lint", { clear = true }),
-        callback = function() lint.try_lint() end,
+        callback = function()
+          if has_eslint_config() then lint.try_lint() end
+        end,
       })
 
       vim.keymap.set("n", "<leader>ll", function() lint.try_lint() end, with_opts "Lint file")
@@ -287,6 +313,7 @@ return {
         css = { "prettierd" },
         json = { "prettierd" },
         yaml = { "prettierd" },
+        nix = { "nixfmt" },
       },
     },
   },
@@ -325,6 +352,7 @@ return {
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-path",
       "hrsh7th/cmp-nvim-lsp-signature-help",
+      "onsails/lspkind.nvim",
     },
     config = function()
       -- See `:help cmp`
@@ -339,6 +367,19 @@ return {
         },
         -- idea like suggest
         completion = { completeopt = "menu,menuone,noinsert" },
+
+        ---@diagnostic disable-next-line: missing-fields
+        formatting = {
+          fields = { "abbr", "kind", "menu" },
+          format = require("lspkind").cmp_format {
+            mode = "symbol", -- show only symbol annotations
+            maxwidth = 50, -- prevent the popup from showing more than provided characters
+            ellipsis_char = "...", -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead
+            menu = {
+              nvim_lsp = nil,
+            },
+          },
+        },
 
         mapping = cmp.mapping.preset.insert {
           ["<CR>"] = cmp.mapping(function(fallback)
@@ -397,6 +438,7 @@ return {
           { name = "buffer", priority = 200 },
           { name = "path", priority = 100 },
           { name = "nvim_lsp_signature_help" },
+          { name = "vim-dadbod-completion" },
         },
       }
     end,
