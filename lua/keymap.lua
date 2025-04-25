@@ -32,3 +32,6 @@ vim.keymap.set("n", "N", "Nzzzv")
 vim.keymap.set("n", "<leader>rr", ":!go run %<cr>", with_opts "go run this file")
 vim.keymap.set("n", "<leader>rt", ":Neotest run file<cr>", with_opts "run tests (file)")
 vim.keymap.set("n", "<leader>rT", ":Neotest summary toggle<cr>", with_opts "neotest toggle")
+
+-- DBUI
+vim.keymap.set("n", "<leader>bt", ":DBUIToggle<cr>", with_opts "Toggle DBUI")
