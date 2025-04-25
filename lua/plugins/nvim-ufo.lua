@@ -18,7 +18,7 @@ return {
       end,
     },
   },
-  event = "BufReadPost",
+  event = "VeryLazy",
   config = function()
     local ufo = require "ufo"
 
