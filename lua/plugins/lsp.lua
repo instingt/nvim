@@ -40,21 +40,21 @@ return {
           vim.keymap.set("n", "<leader>la", function() vim.lsp.buf.code_action() end, opts "Code action")
           vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts "LSP Hover")
           vim.keymap.set({ "n", "i" }, "<SC-K>", function() vim.lsp.buf.signature_help() end, opts "Signature help")
-          vim.keymap.set("n", "[e", function() vim.diagnostic.goto_next() end, opts "Next error")
-          vim.keymap.set("n", "]e", function() vim.diagnostic.goto_prev() end, opts "Prev error")
+          vim.keymap.set("n", "[e", function() vim.diagnostic.jump { count = 1, float = true } end, opts "Next error")
+          vim.keymap.set("n", "]e", function() vim.diagnostic.jump { count = 1, float = true } end, opts "Prev error")
 
           vim.lsp.handlers["textDocument/references"] = function(_, _, _) builtin.lsp_references() end
           vim.lsp.handlers["textDocument/implementation"] = function(_, _, _) builtin.lsp_implementations() end
-          vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+          vim.lsp.buf.hover {
             border = "single",
             focus = true,
             focusable = true,
-          })
-          vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+          }
+          vim.lsp.buf.signature_help {
             border = "single",
             focus = false,
             focusable = false,
-          })
+          }
         end,
       })
       -- Change diagnostic symbols in the sign column (gutter)
